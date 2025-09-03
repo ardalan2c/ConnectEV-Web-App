@@ -1,0 +1,23 @@
+export const env = {
+  databaseUrl: process.env.DATABASE_URL || "",
+  publicMapsKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
+  serverMapsKey: process.env.GOOGLE_MAPS_API_KEY_SERVER || "",
+  resendKey: process.env.RESEND_API_KEY || "",
+  twilioSid: process.env.TWILIO_ACCOUNT_SID || "",
+  twilioToken: process.env.TWILIO_AUTH_TOKEN || "",
+  twilioMessagingService: process.env.TWILIO_MESSAGING_SERVICE_SID || "",
+  stripeSecret: process.env.STRIPE_SECRET_KEY || "",
+  visionProvider: process.env.VISION_PROVIDER || "",
+  visionKey: process.env.VISION_API_KEY || "",
+  acdcOrgId: process.env.ACDC_ORG_ID || "",
+  posthogKey: process.env.NEXT_PUBLIC_POSTHOG_KEY || "",
+  posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com",
+  adminAccessToken: process.env.ADMIN_ACCESS_TOKEN || "",
+  featureUseCalendly: (process.env.FEATURE_USE_CALENDLY || "false").toLowerCase() === "true",
+  calendlyUrl: process.env.CALENDLY_URL || "",
+  slackWebhook: process.env.SLACK_WEBHOOK_URL || "",
+  stripePaymentLink: process.env.STRIPE_PAYMENT_LINK_URL || "",
+  supabaseUrl: process.env.SUPABASE_URL || "",
+  supabaseServiceKey: process.env.SUPABASE_SERVICE_ROLE_KEY || "",
+  supabaseBucket: process.env.SUPABASE_BUCKET || "leads"
+};

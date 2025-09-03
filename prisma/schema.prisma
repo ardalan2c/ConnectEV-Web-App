@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  admin
+  partner
+}
+
+enum OrgType {
+  ACDC
+  Partner
+}
+
+enum AppointmentType {
+  virtual
+  site_visit
+  install
+}
+
+model User {
+  id        String   @id @default(uuid())
+  role      UserRole
+  name      String?
+  email     String   @unique
+  phone     String?
+  orgId     String?
+  org       Org?     @relation(fields: [orgId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Org {
+  id               String   @id @default(uuid())
+  name             String
+  type             OrgType
+  ecrA_esa_number  String?
+  insuranceUrl     String?
+  wsibUrl          String?
+  serviceAreas     String[]
+  capacityRuleJson Json?
+  rating           Float?
+  status           String   @default("active")
+  users            User[]
+  leads            Lead[]
+  appointments     Appointment[]
+}
+
+model Lead {
+  id               String    @id @default(uuid())
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  firstName        String
+  lastName         String
+  email            String
+  phone            String
+  addressJson      Json
+  coords           Json?
+  dwellingType     String?
+  chargerType      String?
+  extrasJson       Json?
+  runLengthMeters  Int?
+  photos           String[]
+  panelServiceAmps Int?
+  priceBandMin     Int?
+  priceBandMax     Int?
+  status           String    @default("new")
+  assignedOrgId    String?
+  assignedOrg      Org?      @relation(fields: [assignedOrgId], references: [id])
+  source           String?
+  caslConsent      Boolean   @default(false)
+  notes            String?
+  appointments     Appointment[]
+  documents        Document[]
+}
+
+model Appointment {
+  id        String          @id @default(uuid())
+  leadId    String
+  orgId     String
+  type      AppointmentType
+  startsAt  DateTime
+  endsAt    DateTime
+  locationJson Json?
+  status    String
+  lead      Lead            @relation(fields: [leadId], references: [id])
+  org       Org             @relation(fields: [orgId], references: [id])
+}
+
+model Document {
+  id           String   @id @default(uuid())
+  orgId        String?
+  leadId       String?
+  type         String
+  url          String
+  metadataJson Json?
+  org          Org?     @relation(fields: [orgId], references: [id])
+  lead         Lead?    @relation(fields: [leadId], references: [id])
+}
+
+model EventLog {
+  id         String   @id @default(uuid())
+  type       String
+  payloadJson Json?
+  createdAt  DateTime @default(now())
+}
+

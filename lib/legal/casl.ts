@@ -1,0 +1,1 @@
+export const CASL_CONSENT_LABEL = `I agree to receive service-related emails and SMS from ConnectEV Inc. You can unsubscribe at any time.`;
