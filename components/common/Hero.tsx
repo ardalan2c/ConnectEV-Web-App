@@ -65,12 +65,10 @@ function TrustRow() {
 function HeroVideo() {
   const heroVideo = "/hero.mp4";
   
-  // In a real app, you could check if the video exists
-  // For now, we'll provide a graceful fallback
   return (
     <>
       <video 
-        className="absolute inset-0 h-full w-full object-cover opacity-90" 
+        className="absolute inset-0 h-full w-full object-cover opacity-10" 
         src={heroVideo}
         autoPlay
         muted
@@ -81,11 +79,12 @@ function HeroVideo() {
           // Hide video on error, show fallback background
           e.currentTarget.style.display = 'none';
         }}
+        style={{ zIndex: 1 }}
       />
       {/* Fallback background when video fails to load */}
       <div 
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#f8fafc,_#ffffff)] opacity-20"
-        style={{ zIndex: -1 }}
+        className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(16,185,129,0.05)_0%,_rgba(248,250,252,0.8)_100%)]"
+        style={{ zIndex: 0 }}
       />
     </>
   );
