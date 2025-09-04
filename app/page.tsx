@@ -1,6 +1,7 @@
 import { Hero } from "@/components/common/Hero";
 import { CityChipsGrid } from "@/components/common/CityChipsGrid";
 import { FaqAccordion } from "@/components/common/FaqAccordion";
+import { CTAHotline } from "@/components/common/CTAHotline";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -107,7 +108,7 @@ export default function HomePage() {
         </section>
 
         {/* Final CTA Section */}
-        <section className="mx-auto max-w-7xl px-4 py-20">
+        <section id="quote" className="mx-auto max-w-7xl px-4 py-20">
           <div className="rounded-3xl border border-black/10 p-8 text-center bg-white shadow-soft">
             <h2 className="text-3xl font-semibold mb-3">Ready to charge at home?</h2>
             <p className="text-slate-600 mb-6 text-lg">Start with a quick quote. We&apos;ll confirm scope before booking.</p>
@@ -120,11 +121,7 @@ export default function HomePage() {
         {/* Mobile CTA */}
       </main>
       
-      {/* Sticky mobile CTA injected at document end */}
-      {(() => {
-        const { CTAHotline } = require("@/components/common/CTAHotline");
-        return <CTAHotline />;
-      })()}
+      <CTAHotline />
     </>
   );
 }
