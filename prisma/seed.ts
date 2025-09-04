@@ -28,9 +28,10 @@ async function main() {
   });
 
   const partner = await prisma.org.upsert({
-    where: { name: "PartnerOne" },
+    where: { id: "partner-one-seed" },
     update: { status: "active" },
     create: {
+      id: "partner-one-seed",
       name: "PartnerOne",
       type: OrgType.Partner,
       serviceAreas: ["Toronto", "North York", "Etobicoke"],

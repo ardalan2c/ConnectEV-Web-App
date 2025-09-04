@@ -28,7 +28,7 @@ export function Header() {
           {nav.map((n) => (
             <Link 
               key={n.href} 
-              href={n.href} 
+              href={n.href as any} 
               className={cn("px-2 py-1 rounded-xl hover:bg-black/[0.04] transition-colors", 
                 pathname === n.href && "text-slate-900 font-medium")}
             >

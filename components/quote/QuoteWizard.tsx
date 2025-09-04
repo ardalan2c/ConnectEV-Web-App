@@ -34,8 +34,8 @@ export function QuoteWizard() {
   
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  const nextStep = () => setStep((s) => Math.min(4, (s + 1) as Step));
-  const prevStep = () => setStep((s) => Math.max(1, (s - 1) as Step));
+  const nextStep = () => setStep((s) => Math.min(4, s + 1) as Step);
+  const prevStep = () => setStep((s) => Math.max(1, s - 1) as Step);
 
   // Calculate price band for display
   const priceBand = React.useMemo(() => {
