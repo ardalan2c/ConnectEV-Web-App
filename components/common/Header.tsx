@@ -79,8 +79,8 @@ export function Header() {
             </Button>
           </div>
           
-          <Button asChild>
-            <Link href="/quote">Get Instant Quote</Link>
+          <Button asChild className="bg-emerald-600 hover:bg-emerald-700">
+            <Link href="/quote">Book Now</Link>
           </Button>
         </div>
       </div>

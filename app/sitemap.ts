@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const site = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
-  const basePaths = ["/", "/services", "/process", "/faq", "/service-areas", "/quote"];
+  const basePaths = ["/", "/services", "/process", "/faq", "/service-areas", "/quote", "/book"];
   const citySlugs = [
     "toronto",
     "mississauga",
