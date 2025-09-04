@@ -1,80 +1,64 @@
-# Vercel Build Report
+# Vercel Build Readiness Report
 
-## App Root Analysis
+## App Root
+- APP_ROOT = .
+- Why: Repository root contains Next.js signs:
+  - Has `app/` directory (App Router)
+  - Has `next.config.ts`
+  - Has `tsconfig.json`
+  - Root `package.json` depends on `next`
 
-**App root:** `/Users/toosi/VS CODE/ConnectEV Web App/ConnectEV-Web-App-1/` (repository root)
+## Package.json (at APP_ROOT)
+- next: 15.0.3
+- react: 18.3.1
+- react-dom: 18.3.1
+- scripts:
+  - dev: next dev
+  - build: next build
+  - start: next start -p 3000
+  - postinstall: prisma generate
+  - db:generate: prisma generate
+  - db:migrate: prisma migrate deploy
+  - db:seed: node prisma/seed.mjs
+- top-level:
+  - private: true
+  - packageManager: pnpm@8
+  - engines.node: ">=18.18 <23"
 
-**Why this is the app root:**
-- ✅ Has `/app` directory (Next.js App Router)
-- ✅ Has `next.config.ts`  
-- ✅ Has package.json with "next" dependency
-- ✅ This is the repository root - no monorepo structure detected
+## Minimal Configs
+- next.config.ts: present (strict mode enabled; MDX integration)
+- tsconfig.json: present
+- .gitignore: contains .env*, .next, node_modules
+- vercel.json: added to enforce Next.js framework and commands
 
-## Package.json Configuration
+## Workspace/Monorepo
+- No pnpm-workspace.yaml detected; single app at repo root
 
-**Final versions:**
-- next: "15.0.3" ✅
-- react: "18.3.1" ✅
-- react-dom: "18.3.1" ✅
+## Local Verify
+- pnpm install → OK
+- pnpm db:generate → OK
+- pnpm build → OK (Next.js 15)
 
-**Required scripts (all present):**
-- "dev": "next dev" ✅
-- "build": "next build" ✅
-- "start": "next start -p 3000" ✅
-- "postinstall": "prisma generate" ✅
-- "db:generate": "prisma generate" ✅
-- "db:migrate": "prisma migrate deploy" ✅
-- "db:seed": "node prisma/seed.mjs" ✅
+## Vercel Settings
+- Framework Preset: Next.js
+- Root Directory: (leave blank)
+- Install Command: pnpm install
+- Build Command: pnpm build
+- Output Directory: .next (default)
 
-**Additional configuration:**
-- "packageManager": "pnpm@8" ✅
-- "engines": { "node": ">=18.18 <23" } ✅
-- "private": true ✅
+## After Deploy
+- Set `NEXT_PUBLIC_SITE_URL` to your live domain
+- One-time prod DB init (run locally with prod `DATABASE_URL` set):
+  export DATABASE_URL="postgresql://…?schema=public"
+  pnpm db:generate
+  pnpm prisma migrate deploy
+  pnpm db:seed
 
-## Files Status
+## Files Changed
+- package.json (scripts.postinstall → prisma generate)
+- vercel.json (new)
+- REPORT.md (this file)
 
-**Created/Modified:** None required - all configuration was already correct
-
-**Existing config files:**
-- next.config.ts ✅ (advanced config with MDX, already has reactStrictMode)
-- tsconfig.json ✅ (comprehensive config with path mapping)
-- .gitignore ✅ (already contains .env*, .next, node_modules)
-
-## Build Status
-
-❌ **Build failed** - TypeScript error in `./app/tools/condo-letter/page.tsx:29:13`
-
-```
-Type error: Type '(formData: FormData) => Promise<string>' is not assignable to type 'string | ((formData: FormData) => void | Promise<void>) | undefined'.
-```
-
-**Root cause:** Server action `createLetter` returns `Promise<string>` but should return `Promise<void>` for form actions.
-
-## Next Actions for User
-
-### A) Git Commands
-```bash
-git add -A
-git commit -m "chore: make Next.js app Vercel-ready (Next 15, scripts, engines)"
-git push origin main
-```
-
-### B) Vercel Settings
-- **Framework Preset:** Next.js
-- **Root Directory:** (leave blank - using repo root)
-- **Install Command:** `pnpm install`
-- **Build Command:** `pnpm build`
-
-### C) Post-Deployment Setup
-After Vercel deployment succeeds:
-1. Update `NEXT_PUBLIC_SITE_URL` in Vercel environment variables to your live domain
-2. One-time prod DB initialization:
-```bash
-export DATABASE_URL="postgresql://postgres:Connectevinc1!@db.znxevldiunjvgeecshkb.supabase.co:5432/postgres?schema=public"
-pnpm db:generate
-pnpm prisma migrate deploy
-pnpm db:seed
-```
-
-### D) Fix Required Before Deployment
-The build will fail on Vercel due to the TypeScript error in `app/tools/condo-letter/page.tsx`. The server action needs to be fixed to return `Promise<void>` instead of `Promise<string>`.
+## Root Cause (likely) and Fix
+- Cause: Vercel could not detect a Next.js app because the Root Directory was ambiguous or missing framework hint.
+- Fix: Confirmed repo root is the Next.js app; ensured Next.js dependencies and scripts; added `vercel.json` to declare framework and commands.

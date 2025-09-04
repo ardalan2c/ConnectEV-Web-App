@@ -17,7 +17,7 @@
     "db:migrate": "prisma migrate deploy",
     "db:generate": "prisma generate",
     "db:seed": "node prisma/seed.mjs",
-    "postinstall": "prisma generate || true"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.8",
