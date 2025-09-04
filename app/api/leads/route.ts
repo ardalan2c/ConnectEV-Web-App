@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { estimatePriceBand, clampBand } from "@/lib/pricing";
 import { storeLeadPhotos } from "@/lib/storage";
 import { slackNotify } from "@/lib/notifications";
+import { resolve as resolveAddress } from "@/lib/address";
 
 export async function POST(req: Request) {
   const form = await req.formData();
@@ -24,10 +25,18 @@ export async function POST(req: Request) {
   const band = clampBand(estimatePriceBand(runLengthMeters, JSON.parse(extrasJson)));
 
   try {
+    // Resolve address using the pluggable provider (plain text in Launch Mode)
+    const resolved = await resolveAddress(address);
+    
     const lead = await prisma.lead.create({
       data: {
         firstName, lastName, email, phone,
-        addressJson: { formatted: address, placeId } as any,
+        addressJson: {
+          formatted: resolved.formatted,
+          lat: resolved.lat,
+          lng: resolved.lng,
+          placeId: placeId || undefined
+        } as any,
         runLengthMeters,
         chargerType,
         extrasJson: JSON.parse(extrasJson) as any,

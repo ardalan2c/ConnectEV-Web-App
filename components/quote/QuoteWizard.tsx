@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CASL_CONSENT_LABEL } from "@/lib/legal/casl";
 import { LAUNCH_CONFIG } from "@/lib/config/launch";
+import { env } from "@/lib/env";
 import { computePriceBand } from "@/lib/pricing/adders";
 
 type Step = 1 | 2 | 3 | 4; // Simple 3-step + result
@@ -101,7 +102,7 @@ export function QuoteWizard() {
         <div className="space-y-6">
           <div>
             <Label className="text-base font-medium">Contact & Address</Label>
-            <p className="text-sm text-slate-600 mt-1">We'll use this to provide accurate pricing and scheduling.</p>
+            <p className="text-sm text-slate-600 mt-1">We&apos;ll use this to provide accurate pricing and scheduling.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -296,7 +297,7 @@ export function QuoteWizard() {
             <div className="text-sm text-green-800 space-y-2 text-left">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 bg-green-200 rounded-full flex items-center justify-center text-green-900 text-xs font-medium">1</div>
-                <span>We'll review your panel photos (usually within 15 minutes)</span>
+                <span>We&apos;ll review your panel photos (usually within 15 minutes)</span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 bg-green-200 rounded-full flex items-center justify-center text-green-900 text-xs font-medium">2</div>
@@ -310,11 +311,19 @@ export function QuoteWizard() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button size="lg" className="min-w-[200px]">
-              Book 15-min virtual check
-            </Button>
+            {env.featureUseCalendly && env.calendlyUrl ? (
+              <Button size="lg" asChild className="min-w-[200px]">
+                <a href={env.calendlyUrl} target="_blank" rel="noreferrer">
+                  Book 15-min virtual check
+                </a>
+              </Button>
+            ) : (
+              <Button size="lg" className="min-w-[200px]">
+                Book 15-min virtual check
+              </Button>
+            )}
             <Button variant="outline" size="lg" className="min-w-[200px]">
-              We'll text you in ~15 min
+              We&apos;ll text you in ~15 min
             </Button>
           </div>
         </div>

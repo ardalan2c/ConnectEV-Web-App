@@ -30,3 +30,6 @@ export function fuzzyKey(a: AddressJson) {
   ].join("|");
 }
 
+// Re-export provider-based address functions so `@/lib/address` serves as a single entrypoint
+export type { AddressSuggestion, ResolvedAddress } from "../src/lib/address";
+export { suggest, resolve, currentProvider } from "../src/lib/address";

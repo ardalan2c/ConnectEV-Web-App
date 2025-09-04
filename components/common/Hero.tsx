@@ -51,10 +51,10 @@ function TrustRow() {
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-4">
       {[
-        "ESA Permit Included",
         "Licensed Electrical Contractors",
+        "ESA Permit Included",
+        "WSIB",
         "2-Year Workmanship Warranty",
-        "Serving the Greater Toronto Area",
       ].map((t) => (
         <div key={t} className="rounded-2xl border border-black/10 p-3 text-xs text-slate-600 bg-white">{t}</div>
       ))}
@@ -103,4 +103,3 @@ function QuotePreview() {
     </div>
   );
 }
-

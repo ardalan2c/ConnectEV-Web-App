@@ -3,9 +3,10 @@ const prisma = new PrismaClient();
 
 async function main() {
   const acdc = await prisma.org.upsert({
-    where: { name: 'ACDC Electrical Tech Inc.' },
+    where: { id: 'acdc-org-id' },
     update: {},
     create: {
+      id: 'acdc-org-id',
       name: 'ACDC Electrical Tech Inc.',
       type: 'ACDC',
       ecrA_esa_number: 'XXXXXXX',

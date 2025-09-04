@@ -1,7 +1,9 @@
 export const env = {
   databaseUrl: process.env.DATABASE_URL || "",
+  addressProvider: process.env.ADDRESS_PROVIDER || "none",
   publicMapsKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
   serverMapsKey: process.env.GOOGLE_MAPS_API_KEY_SERVER || "",
+  mapboxToken: process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "",
   resendKey: process.env.RESEND_API_KEY || "",
   twilioSid: process.env.TWILIO_ACCOUNT_SID || "",
   twilioToken: process.env.TWILIO_AUTH_TOKEN || "",

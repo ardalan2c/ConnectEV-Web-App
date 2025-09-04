@@ -109,7 +109,7 @@ export default function HomePage() {
         <section className="mx-auto max-w-7xl px-4 py-20">
           <div className="rounded-3xl border border-black/10 p-8 text-center bg-white shadow-soft">
             <h2 className="text-3xl font-semibold mb-3">Ready to charge at home?</h2>
-            <p className="text-slate-600 mb-6 text-lg">Start with a quick quote. We'll confirm scope before booking.</p>
+            <p className="text-slate-600 mb-6 text-lg">Start with a quick quote. We&apos;ll confirm scope before booking.</p>
             <Button asChild size="lg">
               <Link href="/quote">Get Your Instant Quote</Link>
             </Button>

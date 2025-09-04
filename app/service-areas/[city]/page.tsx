@@ -1,8 +1,9 @@
 import { gtaCities } from "@/config/cities";
 import { notFound } from "next/navigation";
 
-export default function CityPage({ params }: { params: { city: string } }) {
-  const cityParam = decodeURIComponent(params.city).replace(/-/g, " ");
+export default async function CityPage({ params }: { params: Promise<{ city: string }> }) {
+  const { city } = await params;
+  const cityParam = decodeURIComponent(city).replace(/-/g, " ");
   const match = gtaCities.find((c) => c.toLowerCase().replace(/\s+/g, " ") === cityParam.toLowerCase().replace(/\s+/g, " "));
   if (!match) return notFound();
   return (

@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './e2e',
+  // Allow running tests from both e2e/ and tests/preview via explicit path
+  testDir: './',
   timeout: 30_000,
   use: {
     baseURL: 'http://localhost:3000',
@@ -12,4 +13,3 @@ export default defineConfig({
     { name: 'mobile', use: { ...devices['Pixel 5'] } },
   ],
 });
-

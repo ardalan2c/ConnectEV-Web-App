@@ -48,6 +48,7 @@ model Org {
   users            User[]
   leads            Lead[]
   appointments     Appointment[]
+  documents        Document[]
 }
 
 model Lead {
@@ -109,3 +110,5 @@ model EventLog {
   createdAt  DateTime @default(now())
 }
 
+// Webhook events for external providers (FUB, Retell)
+// (Phase 1 DEMO models removed)

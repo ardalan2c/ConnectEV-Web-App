@@ -27,7 +27,7 @@
 ### Step 1: Contact & Address
 - [ ] Form shows "Step 1 of 3"
 - [ ] All fields required: First, Last, Email, Phone, Address
-- [ ] Address autocomplete works (Google Places)
+ - [ ] Address field is plain text in Launch Mode
 - [ ] CASL checkbox required with proper text
 - [ ] "Next: Run length" button disabled until all fields filled
 
