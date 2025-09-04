@@ -20,9 +20,9 @@ export default function HomePage() {
     name: "ConnectEV Inc.",
     url: baseUrl,
     image: `${baseUrl}/og.png`,
-    areaServed: "Greater Toronto Area",
+    areaServed: ["Toronto","Mississauga","Brampton","Vaughan","Markham","Richmond Hill","Oakville","Etobicoke","North York","Scarborough"],
     slogan: "Charge ahead.",
-    telephone: process.env.NEXT_PUBLIC_SUPPORT_PHONE_E164 || "+16476072739",
+    telephone: "+1 647-607-2739",
     sameAs: [],
     openingHours: "Mo-Fr 09:00-18:00"
   };
