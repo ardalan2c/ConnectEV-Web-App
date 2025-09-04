@@ -1,21 +1,25 @@
 import type { MetadataRoute } from "next";
-import { gtaCities } from "@/config/cities";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const staticPaths = [
-    "/",
-    "/quote",
-    "/residential",
-    "/condo",
-    "/workplace",
-    "/panel-upgrades",
-    "/rebates-and-permits",
-    "/about",
-    "/contact",
-    "/faq",
+  const site = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+  const basePaths = ["/", "/services", "/process", "/faq", "/service-areas", "/quote"];
+  const citySlugs = [
+    "toronto",
+    "mississauga",
+    "brampton",
+    "vaughan",
+    "markham",
+    "richmond-hill",
+    "oakville",
+    "etobicoke",
+    "north-york",
+    "scarborough",
   ];
-  const cityPaths = gtaCities.map((c) => `/service-areas/${c.toLowerCase().replace(/\s+/g, "-")}`);
-  return [...staticPaths, ...cityPaths].map((p) => ({ url: base + p, changeFrequency: "weekly", priority: p === "/" ? 1 : 0.6 }));
+  const cityPaths = citySlugs.map((s) => `/service-areas/${s}`);
+  const all = [...basePaths, ...cityPaths];
+  return all.map((p) => ({
+    url: site + p,
+    changeFrequency: "weekly",
+    priority: p === "/" ? 1 : 0.6,
+  }));
 }
-

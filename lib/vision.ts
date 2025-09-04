@@ -1,4 +1,4 @@
-import { env } from "./env";
+// Server-only vision stub; read process.env directly
 
 export type PanelAnalysis = {
   serviceAmps?: number;
@@ -8,7 +8,7 @@ export type PanelAnalysis = {
 };
 
 export async function analyzePanel(images: string[]): Promise<PanelAnalysis> {
-  if (!env.visionProvider || !env.visionKey) {
+  if (!process.env.VISION_PROVIDER || !process.env.VISION_API_KEY) {
     return { confidence: 0, flags: ["vision_disabled"] };
   }
   // Provider-agnostic stub. Replace with real call.
@@ -20,4 +20,3 @@ export async function analyzePanel(images: string[]): Promise<PanelAnalysis> {
     return { confidence: 0, flags: ["vision_error"] };
   }
 }
-

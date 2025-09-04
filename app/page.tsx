@@ -21,6 +21,7 @@ export default function HomePage() {
     image: `${baseUrl}/og.png`,
     areaServed: "Greater Toronto Area",
     slogan: "Charge ahead.",
+    telephone: process.env.NEXT_PUBLIC_SUPPORT_PHONE_E164 || "+16476072739",
     sameAs: [],
     openingHours: "Mo-Fr 09:00-18:00"
   };
@@ -115,7 +116,15 @@ export default function HomePage() {
             </Button>
           </div>
         </section>
+        
+        {/* Mobile CTA */}
       </main>
+      
+      {/* Sticky mobile CTA injected at document end */}
+      {(() => {
+        const { CTAHotline } = require("@/components/common/CTAHotline");
+        return <CTAHotline />;
+      })()}
     </>
   );
 }

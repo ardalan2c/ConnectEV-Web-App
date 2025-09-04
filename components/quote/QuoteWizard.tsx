@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CASL_CONSENT_LABEL } from "@/lib/legal/casl";
 import { LAUNCH_CONFIG } from "@/lib/config/launch";
-import { env } from "@/lib/env";
 import { computePriceBand } from "@/lib/pricing/adders";
 
 type Step = 1 | 2 | 3 | 4; // Simple 3-step + result
@@ -33,6 +32,7 @@ export function QuoteWizard() {
   });
   
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [leadId, setLeadId] = React.useState<string | null>(null);
 
   const nextStep = () => setStep((s) => Math.min(4, s + 1) as Step);
   const prevStep = () => setStep((s) => Math.max(1, s - 1) as Step);
@@ -72,6 +72,8 @@ export function QuoteWizard() {
 
       const res = await fetch("/api/leads", { method: "POST", body: fd });
       if (res.ok) {
+        const json = await res.json();
+        setLeadId(json.id || null);
         nextStep(); // Go to result screen
       } else {
         throw new Error("Failed to submit");
@@ -311,9 +313,9 @@ export function QuoteWizard() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            {env.featureUseCalendly && env.calendlyUrl ? (
+            {(process.env.NEXT_PUBLIC_FEATURE_USE_CALENDLY || "false").toLowerCase() === "true" && (process.env.NEXT_PUBLIC_CALENDLY_URL || "") ? (
               <Button size="lg" asChild className="min-w-[200px]">
-                <a href={env.calendlyUrl} target="_blank" rel="noreferrer">
+                <a href={(process.env.NEXT_PUBLIC_CALENDLY_URL as string) || ""} target="_blank" rel="noreferrer">
                   Book 15-min virtual check
                 </a>
               </Button>
@@ -326,6 +328,11 @@ export function QuoteWizard() {
               We&apos;ll text you in ~15 min
             </Button>
           </div>
+          {leadId && (
+            <div className="text-xs text-slate-500 mt-2">
+              Reference: <a className="underline" href={`/thanks?lead=${leadId}`}>lead #{leadId}</a>
+            </div>
+          )}
         </div>
       )}
 

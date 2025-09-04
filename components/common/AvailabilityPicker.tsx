@@ -1,12 +1,13 @@
 "use client";
-import { env } from "@/lib/env";
 import { Button } from "@/components/ui/button";
 
 export function AvailabilityPicker() {
-  if (env.featureUseCalendly && env.calendlyUrl) {
+  const useCalendly = (process.env.NEXT_PUBLIC_FEATURE_USE_CALENDLY || "false").toLowerCase() === "true";
+  const calendlyUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "";
+  if (useCalendly && calendlyUrl) {
     return (
       <Button asChild>
-        <a href={env.calendlyUrl} target="_blank" rel="noreferrer">Book virtual consult</a>
+        <a href={calendlyUrl} target="_blank" rel="noreferrer">Book virtual consult</a>
       </Button>
     );
   }
@@ -19,4 +20,3 @@ export function AvailabilityPicker() {
     </div>
   );
 }
-
