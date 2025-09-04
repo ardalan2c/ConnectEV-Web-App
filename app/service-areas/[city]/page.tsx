@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CTAHotline } from "@/components/common/CTAHotline";
+import { CityGallery } from "@/components/city/CityGallery";
+import { cityMedia, type CitySlug } from "@/content/media-manifest";
 
 export const revalidate = 86400; // 24h ISR
 
@@ -34,6 +36,9 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
   const { city: slug } = await params;
   const city = CITIES.find((c) => c.slug === slug);
   if (!city) return notFound();
+
+  const citySlug = slug as CitySlug;
+  const photos = cityMedia[citySlug]?.gallery || [];
 
   const phone = "+16476072739";
   const site = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
@@ -95,6 +100,8 @@ export default async function CityPage({ params }: { params: Promise<{ city: str
           <Link className="underline" href="/pricing">pricing</Link> for details.
         </div>
       </div>
+
+      <CityGallery photos={photos} />
 
       <div className="flex flex-wrap gap-3">
         <Link href="/#quote" className="inline-flex items-center justify-center h-11 px-5 rounded-xl bg-emerald-600 text-white text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">Get Instant Quote</Link>
