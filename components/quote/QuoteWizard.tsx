@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import { AddressAutocomplete } from "./AddressAutocomplete";
-import { PhotoDropzone } from "./PhotoDropzone";
+import { PhotoUploader } from "./PhotoUploader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +33,8 @@ export function QuoteWizard() {
   
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [leadId, setLeadId] = React.useState<string | null>(null);
+  const [tempLeadId] = React.useState(() => `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+  const [uploadedFiles, setUploadedFiles] = React.useState<{ path: string; mime: string; size: number }[]>([]);
 
   const nextStep = () => setStep((s) => Math.min(4, s + 1) as Step);
   const prevStep = () => setStep((s) => Math.max(1, s - 1) as Step);
@@ -66,9 +68,8 @@ export function QuoteWizard() {
       fd.set("phone", formData.phone);
       fd.set("caslConsent", String(formData.caslConsent));
       
-      formData.photos.forEach((photo, i) => {
-        fd.append("photos", photo, photo.name || `panel-photo-${i + 1}.jpg`);
-      });
+      // Photos are already uploaded via PhotoUploader
+      fd.set("uploadedPhotos", JSON.stringify(uploadedFiles));
 
       const res = await fetch("/api/leads", { method: "POST", body: fd });
       if (res.ok) {
@@ -87,7 +88,7 @@ export function QuoteWizard() {
 
   const canGoToStep2 = formData.firstName && formData.lastName && formData.email && formData.phone && formData.address && formData.caslConsent;
   const canGoToStep3 = true; // No validation needed for step 2
-  const canSubmit = formData.photos.length >= 3;
+  const canSubmit = uploadedFiles.length >= 3;
 
   return (
     <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-soft">
@@ -255,9 +256,9 @@ export function QuoteWizard() {
             <p className="text-sm text-slate-600 mt-1">Upload 3 photos of your electrical panel for accurate pricing.</p>
           </div>
 
-          <PhotoDropzone 
-            onFiles={(photos) => setFormData({...formData, photos})}
-            maxFiles={3}
+          <PhotoUploader 
+            leadId={tempLeadId}
+            onUploaded={setUploadedFiles}
           />
           
           <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">

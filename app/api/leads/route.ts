@@ -36,6 +36,12 @@ export async function POST(req: Request) {
   const exterior = JSON.parse(extrasJson || "{}")?.exteriorPenetration ?? false;
   const drywall = JSON.parse(extrasJson || "{}")?.finishedWalls ?? false;
   const files = form.getAll("photos");
+  const uploadedPhotosJson = String(form.get("uploadedPhotos") || "[]");
+  let uploadedPhotos: { path: string; mime: string; size: number }[] = [];
+  
+  try {
+    uploadedPhotos = JSON.parse(uploadedPhotosJson);
+  } catch {}
 
   const uploadable: File[] = files.filter((f): f is File => typeof f !== "string").filter((f) => (f as File).type?.startsWith("image/") && (f as File).size <= 10 * 1024 * 1024) as File[];
   // Create a temporary lead id to namespace uploads after DB create (upload after lead create)
@@ -62,7 +68,7 @@ export async function POST(req: Request) {
         runLengthMeters,
         chargerType: "Level-2",
         extrasJson: { exteriorPenetration: exterior, finishedWalls: drywall } as any,
-        photos: [],
+        photos: uploadedPhotos.length > 0 ? uploadedPhotos.map(p => p.path) : [],
         priceBandMin: band.min,
         priceBandMax: band.max,
         status: "new",
@@ -70,8 +76,8 @@ export async function POST(req: Request) {
         caslConsent,
       }
     });
-    // Upload photos if possible and update lead
-    if (uploadable.length) {
+    // Upload photos if using old flow (FormData files)
+    if (uploadable.length && uploadedPhotos.length === 0) {
       try {
         const stored = await storeLeadPhotos(uploadable, lead.id);
         if (stored.length) {

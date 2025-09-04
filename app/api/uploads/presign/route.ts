@@ -1,65 +1,77 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import { requireEnv } from "@/lib/env/required";
 import { NextRequest } from "next/server";
-import { randomUUID } from "crypto";
+import { z } from "zod";
 
 const ALLOWED = ["image/jpeg", "image/png", "image/heic"];
 const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5 MB
 function safeName(name: string) { return (name || "upload").replace(/[^a-zA-Z0-9._-]+/g, "_").slice(0, 80); }
 
+const PresignSchema = z.object({
+  leadId: z.string().min(1),
+  files: z.array(z.object({
+    name: z.string(),
+    type: z.string().refine(type => ALLOWED.includes(type), { message: "Unsupported file type" }),
+    size: z.number().max(MAX_SIZE_BYTES, { message: "File too large" })
+  })).min(1).max(10)
+});
+
 export async function POST(req: NextRequest) {
   try {
-    requireEnv(["SUPABASE_URL"]);
-    
     const body = await req.json();
-    const { leadId, fileName, contentType, contentLength } = body as { leadId?: string; fileName?: string; contentType: string; contentLength?: number };
-    if (!ALLOWED.includes(contentType)) {
-      return NextResponse.json({ error: "unsupported_type" }, { status: 415 });
+    const parsed = PresignSchema.safeParse(body);
+    
+    if (!parsed.success) {
+      return NextResponse.json({ error: "validation_failed", details: parsed.error.flatten() }, { status: 400 });
     }
-    if (typeof contentLength === 'number' && contentLength > MAX_SIZE_BYTES) {
-      return NextResponse.json({ error: "file_too_large", max: MAX_SIZE_BYTES }, { status: 413 });
-    }
-    if (!leadId) {
-      return NextResponse.json({ error: "lead_required" }, { status: 400 });
-    }
+    
+    const { leadId, files } = parsed.data;
 
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return NextResponse.json(
-        { 
-          error: "Configure SUPABASE_SERVICE_ROLE_KEY to enable direct uploads; using in-memory stub for now." 
-        }, 
-        { status: 501 }
-      );
+      return NextResponse.json({ error: "storage_not_configured" }, { status: 501 });
     }
 
     const admin = supabaseAdmin();
     const bucket = "lead-photos";
-    const objectName = `${leadId}/${Date.now()}-${safeName(fileName || "upload")}`;
+    const results = [];
 
-    const { data, error } = await admin.storage
-      .from(bucket)
-      .createSignedUploadUrl(objectName);
+    for (const file of files) {
+      const timestamp = Date.now();
+      const path = `${leadId}/${timestamp}-${safeName(file.name)}`;
+      
+      try {
+        const { data, error } = await admin.storage
+          .from(bucket)
+          .createSignedUploadUrl(path);
 
-    if (error || !data) {
-      return NextResponse.json(
-        { error: error?.message || "presign failed" }, 
-        { status: 500 }
-      );
+        if (error || !data) {
+          console.warn(`Presign failed for ${file.name}:`, error?.message);
+          results.push({ 
+            name: file.name, 
+            error: error?.message || "presign failed" 
+          });
+        } else {
+          results.push({
+            name: file.name,
+            path: data.path,
+            token: data.token,
+            mime: file.type
+          });
+        }
+      } catch (err) {
+        console.warn(`Presign error for ${file.name}:`, err);
+        results.push({ 
+          name: file.name, 
+          error: "presign error" 
+        });
+      }
     }
 
-    return NextResponse.json({ 
-      path: data.path, 
-      token: data.token, 
-      url: data.signedUrl, 
-      objectName, 
-      bucket, 
-      contentType,
-      maxSize: MAX_SIZE_BYTES
-    });
+    return NextResponse.json({ results });
   } catch (error) {
+    console.warn("Presign API error:", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Unknown error" }, 
+      { error: "server_error" }, 
       { status: 500 }
     );
   }
