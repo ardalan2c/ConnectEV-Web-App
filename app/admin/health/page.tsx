@@ -22,6 +22,16 @@ export default async function AdminHealthPage() {
   } catch {}
   const storageMs = Date.now() - t1;
 
+  // Storage presign check
+  let presignOk = false;
+  const t2 = Date.now();
+  try {
+    const admin = supabaseAdmin();
+    await admin.storage.from("lead-photos").createSignedUploadUrl("health/probe.txt");
+    presignOk = true;
+  } catch {}
+  const presignMs = Date.now() - t2;
+
   const Tile = ({ label, ok, detail }: { label: string; ok: boolean; detail?: string }) => (
     <div className={`rounded-2xl border p-6 ${ok ? "border-green-300 bg-green-50" : "border-red-300 bg-red-50"}`}>
       <div className="text-sm text-slate-600">{label}</div>
@@ -33,9 +43,10 @@ export default async function AdminHealthPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 space-y-6">
       <h1 className="text-2xl font-bold">System Health</h1>
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Tile label="Prisma Database" ok={dbOk} detail={`${ms} ms`} />
         <Tile label="Supabase Storage" ok={storageOk} detail={`lead-photos bucket • ${storageMs} ms`} />
+        <Tile label="Storage Presign" ok={presignOk} detail={presignOk ? `presign ok • ${presignMs} ms` : "presign failed"} />
         <div className="rounded-2xl border p-6">
           <div className="text-sm text-slate-600">Environment</div>
           <div className="text-xl font-semibold">{process.env.NODE_ENV}</div>

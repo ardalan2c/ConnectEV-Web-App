@@ -4,7 +4,7 @@ import { supabaseBrowser } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-type FileState = "pending" | "uploading" | "done" | "failed";
+type FileState = "pending" | "uploading" | "done" | "error";
 
 interface FileUpload {
   file: File;
@@ -61,7 +61,18 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
     if (files.length === 0 || isUploading) return;
 
     setIsUploading(true);
-    const supabase = supabaseBrowser();
+    
+    let supabase;
+    try {
+      supabase = supabaseBrowser();
+    } catch (err) {
+      // Handle missing public keys
+      const errorMsg = "Site misconfigured: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel env.";
+      setFiles(prev => prev.map(f => ({ ...f, state: "error", error: errorMsg })));
+      setIsUploading(false);
+      return;
+    }
+
     const fileMetadata = files.map(f => ({
       name: f.file.name,
       type: f.file.type,
@@ -87,19 +98,25 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
         const result = results[index];
         
         if (result.error) {
-          setFiles(prev => prev.map((f, i) => i === index ? { ...f, state: "failed", error: result.error } : f));
+          setFiles(prev => prev.map((f, i) => i === index ? { ...f, state: "error", error: result.error } : f));
           return null;
         }
 
         setFiles(prev => prev.map((f, i) => i === index ? { ...f, state: "uploading" } : f));
 
         try {
-          const { data, error } = await supabase.storage
+          const uploadPromise = supabase.storage
             .from("lead-photos")
             .uploadToSignedUrl(result.path, result.token, fileUpload.file, {
               contentType: fileUpload.file.type,
               upsert: false
             });
+
+          const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("UPLOAD_TIMEOUT")), 25000)
+          );
+
+          const { data, error } = await Promise.race([uploadPromise, timeoutPromise]) as any;
 
           if (error) {
             throw new Error(error.message);
@@ -118,10 +135,14 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
             size: fileUpload.file.size
           };
         } catch (err) {
+          const errorMessage = err instanceof Error && err.message === "UPLOAD_TIMEOUT" 
+            ? "Upload failed (UPLOAD_TIMEOUT)" 
+            : err instanceof Error ? err.message : "Upload failed";
+          
           setFiles(prev => prev.map((f, i) => i === index ? { 
             ...f, 
-            state: "failed", 
-            error: err instanceof Error ? err.message : "Upload failed" 
+            state: "error", 
+            error: errorMessage 
           } : f));
           return null;
         }
@@ -150,7 +171,7 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
       }
     } catch (err) {
       console.error("Upload error:", err);
-      setFiles(prev => prev.map(f => ({ ...f, state: "failed", error: "Upload failed" })));
+      setFiles(prev => prev.map(f => ({ ...f, state: "error", error: "Upload failed" })));
     } finally {
       setIsUploading(false);
     }
@@ -165,13 +186,13 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
       case "pending": return "text-slate-500";
       case "uploading": return "text-blue-600";
       case "done": return "text-green-600";
-      case "failed": return "text-red-600";
+      case "error": return "text-red-600";
       default: return "text-slate-500";
     }
   };
 
   const allDone = files.length > 0 && files.every(f => f.state === "done");
-  const hasErrors = files.some(f => f.state === "failed");
+  const hasErrors = files.some(f => f.state === "error");
 
   return (
     <div className="space-y-4">
@@ -199,7 +220,7 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
                   {fileUpload.state === "pending" && "Ready to upload"}
                   {fileUpload.state === "uploading" && "Uploading..."}
                   {fileUpload.state === "done" && "✓ Uploaded"}
-                  {fileUpload.state === "failed" && `✗ ${fileUpload.error}`}
+                  {fileUpload.state === "error" && `✗ ${fileUpload.error}`}
                 </div>
                 {fileUpload.state === "uploading" && (
                   <div className="w-full bg-gray-200 rounded-full h-1 mt-1">

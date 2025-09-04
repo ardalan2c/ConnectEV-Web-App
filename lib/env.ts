@@ -5,6 +5,8 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url().optional(),
   SUPABASE_ANON_KEY: z.string().min(1).optional(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(), // server-only
+  NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string().min(1).optional(),
   DATABASE_URL: z.string().min(1).optional(),
   CALENDLY_URL: z.string().url().optional(),
   ADDRESS_PROVIDER: z.enum(["none","google","mapbox"]).optional(),
@@ -41,6 +43,8 @@ export function assertProdEnv() {
     "NEXT_PUBLIC_SITE_URL",
     "SUPABASE_URL",
     "SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     "DATABASE_URL",
     "CALENDLY_URL",
     "ADDRESS_PROVIDER",
