@@ -1,14 +1,14 @@
-import { Hero } from "@/components/common/Hero";
-import { CityChipsGrid } from "@/components/common/CityChipsGrid";
-import { FaqAccordion } from "@/components/common/FaqAccordion";
-import { CTAHotline } from "@/components/common/CTAHotline";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CTAHotline } from "@/components/common/CTAHotline";
 import Link from "next/link";
 import { Metadata } from "next";
 
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
+  title: "Fast EV-charger installs across GTA — ConnectEV Inc.",
+  description: "Licensed EV charger installation across the Greater Toronto Area. ESA permit included, WSIB covered, 2-year warranty. Get your instant quote today.",
   alternates: { canonical: "/" }
 };
 
@@ -41,6 +41,7 @@ export default function HomePage() {
       { "@type": "Question", name: "Can you install in condos?", acceptedAnswer: { "@type": "Answer", text: "Yes—board approval required; we help with paperwork." } }
     ]
   };
+  
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
@@ -48,77 +49,148 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />
       
       <main id="main-content">
-        <Hero />
-        
-        {/* Services Section */}
-        <section id="install" className="mx-auto max-w-7xl px-4 py-16">
-          <h2 className="text-2xl font-semibold mb-6">What we install</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            {["Home Level-2 Chargers", "Condos & Apartments", "Panel & Service Upgrades"].map((t) => (
-              <div key={t} className="rounded-2xl border border-black/10 p-6 bg-white shadow-soft hover:shadow-md transition-shadow">
-                <h3 className="font-medium">{t}</h3>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Process Section */}
-        <section id="why" className="mx-auto max-w-7xl px-4 py-16">
-          <h2 className="text-2xl font-semibold mb-6">How it works</h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            {["1) Instant Quote", "2) Virtual Check", "3) ESA Permit", "4) Install Day"].map((t) => (
-              <div key={t} className="rounded-2xl border border-black/10 p-6 bg-white shadow-soft">
-                <h3 className="font-medium text-sm">{t}</h3>
-                <div className="h-0.5 bg-emerald-100 mt-4" />
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Smarter Section */}
-        <section className="mx-auto max-w-7xl px-4 py-16">
-          <h2 className="text-2xl font-semibold mb-6">Smarter by design</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="rounded-2xl border border-black/10 p-6 bg-white shadow-soft relative overflow-hidden">
-              <h3 className="font-medium mb-4">Panel Photo Analyzer (AI)</h3>
-              <div className="relative h-28 rounded-xl bg-slate-100 border border-black/10">
-                <span className="absolute top-2 left-2 text-[10px] bg-emerald-400/20 text-emerald-900 border border-emerald-400/40 rounded-md px-2 py-0.5">Main breaker: 100A</span>
-                <span className="absolute bottom-2 right-2 text-[10px] bg-emerald-400/20 text-emerald-900 border border-emerald-400/40 rounded-md px-2 py-0.5">Free slots: 2</span>
-              </div>
+        {/* Hero Section */}
+        <section className="py-16 md:py-24">
+          <div className="mx-auto max-w-7xl px-4 text-center">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+              Fast EV-charger installs across GTA
+            </h1>
+            <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">
+              Upload panel photos, get a price band in minutes, and book your install with licensed contractors.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+              <Button asChild size="lg" className="min-h-[48px] px-8">
+                <Link href="/quote">Get Instant Quote</Link>
+              </Button>
+              <Button variant="outline" size="lg" asChild className="min-h-[48px] px-8">
+                <a href="tel:+16476072739">Call 647-607-2739</a>
+              </Button>
             </div>
-            <div className="rounded-2xl border border-black/10 p-6 bg-white shadow-soft">
-              <h3 className="font-medium">Condo Letter Generator</h3>
-            </div>
-            <div className="rounded-2xl border border-black/10 p-6 bg-white shadow-soft">
-              <h3 className="font-medium">Lead Routing SLAs</h3>
+
+            {/* Proof Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              {[
+                "ESA Permit Included",
+                "WSIB Covered", 
+                "Licensed Contractors",
+                "2-Year Warranty"
+              ].map((item) => (
+                <Badge key={item} className="p-3 text-center justify-center">
+                  {item}
+                </Badge>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* Service Areas Section */}
-        <section className="mx-auto max-w-7xl px-4 py-16">
-          <h2 className="text-2xl font-semibold mb-6">Serving the Greater Toronto Area</h2>
-          <CityChipsGrid />
+        {/* How It Works */}
+        <section className="py-16 bg-slate-50">
+          <div className="mx-auto max-w-7xl px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">How it works</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  step: "1",
+                  title: "Get Quote",
+                  description: "Upload panel photos and get your price band in minutes"
+                },
+                {
+                  step: "2", 
+                  title: "Virtual Check",
+                  description: "15-minute video call to confirm scope and answer questions"
+                },
+                {
+                  step: "3",
+                  title: "Install Day",
+                  description: "Licensed contractor installs your charger with ESA permit"
+                }
+              ].map((item) => (
+                <div key={item.step} className="text-center">
+                  <div className="w-16 h-16 bg-emerald-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+                    {item.step}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-slate-600">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="mx-auto max-w-7xl px-4 py-16">
-          <h2 className="text-2xl font-semibold mb-6">Frequently asked</h2>
-          <FaqAccordion />
+        {/* Services Teaser */}
+        <section className="py-16">
+          <div className="mx-auto max-w-7xl px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">What we install</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  title: "Home Chargers",
+                  description: "Level-2 charging for driveways and garages",
+                  href: "/services"
+                },
+                {
+                  title: "Condo Installs", 
+                  description: "Board-approved installations with proper permits",
+                  href: "/services"
+                },
+                {
+                  title: "Panel Upgrades",
+                  description: "Electrical service upgrades when needed",
+                  href: "/services"
+                }
+              ].map((service) => (
+                <Link 
+                  key={service.title}
+                  href={service.href}
+                  className="block p-6 rounded-2xl border border-black/10 bg-white hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+                  <p className="text-slate-600">{service.description}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
 
-        {/* Final CTA Section */}
-        <section id="quote" className="mx-auto max-w-7xl px-4 py-20">
-          <div className="rounded-3xl border border-black/10 p-8 text-center bg-white shadow-soft">
-            <h2 className="text-3xl font-semibold mb-3">Ready to charge at home?</h2>
-            <p className="text-slate-600 mb-6 text-lg">Start with a quick quote. We&apos;ll confirm scope before booking.</p>
-            <Button asChild size="lg">
-              <Link href="/quote">Get Your Instant Quote</Link>
+        {/* FAQ Teaser */}
+        <section className="py-16 bg-slate-50">
+          <div className="mx-auto max-w-4xl px-4 text-center">
+            <h2 className="text-3xl font-bold mb-6">Common questions</h2>
+            <p className="text-xl text-slate-600 mb-8">
+              Get answers about permits, pricing, and installation process
+            </p>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/faq">View All FAQs</Link>
             </Button>
           </div>
         </section>
-        
-        {/* Mobile CTA */}
+
+        {/* Service Areas Teaser */}
+        <section className="py-16">
+          <div className="mx-auto max-w-7xl px-4 text-center">
+            <h2 className="text-3xl font-bold mb-6">Serving the Greater Toronto Area</h2>
+            <p className="text-xl text-slate-600 mb-8">
+              Licensed installations across Toronto, Mississauga, Brampton, Vaughan, and more
+            </p>
+            <Button asChild variant="outline" size="lg">
+              <Link href="/service-areas">View Service Areas</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="py-20 bg-emerald-600 text-white">
+          <div className="mx-auto max-w-4xl px-4 text-center">
+            <h2 className="text-4xl font-bold mb-6">Ready to charge at home?</h2>
+            <p className="text-xl mb-8 text-emerald-100">
+              Get your instant quote and book your installation today
+            </p>
+            <Button asChild size="lg" className="bg-white text-emerald-600 hover:bg-slate-100 min-h-[48px] px-8">
+              <Link href="/quote">Get Your Quote</Link>
+            </Button>
+          </div>
+        </section>
       </main>
       
       <CTAHotline />
