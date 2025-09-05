@@ -27,7 +27,7 @@ export default async function AdminHealthPage() {
   const t2 = Date.now();
   try {
     const admin = supabaseAdmin();
-    await admin.storage.from("lead-photos").createSignedUploadUrl("health/probe.txt");
+    await admin.storage.from("lead-photos").createSignedUploadUrl(`health/probe-${Date.now()}.txt`);
     presignOk = true;
   } catch {}
   const presignMs = Date.now() - t2;

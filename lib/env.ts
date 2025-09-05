@@ -39,12 +39,17 @@ const envSchema = z.object({
 
 export function assertProdEnv() {
   if (process.env.NODE_ENV !== "production") return;
+  
+  // Check that we have either public or server Supabase config (or both)
+  const hasPublicSupabase = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const hasServerSupabase = process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY;
+  
+  if (!hasPublicSupabase && !hasServerSupabase) {
+    throw new Error("Missing Supabase config: need either (NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY) or (SUPABASE_URL + SUPABASE_ANON_KEY)");
+  }
+  
   const required = [
     "NEXT_PUBLIC_SITE_URL",
-    "SUPABASE_URL",
-    "SUPABASE_ANON_KEY",
-    "NEXT_PUBLIC_SUPABASE_URL",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     "DATABASE_URL",
     "CALENDLY_URL",
     "ADDRESS_PROVIDER",

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { supabaseBrowser } from "@/lib/supabase/client";
+import { getSupabaseBrowser } from "@/lib/supabase/browser";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -64,10 +64,10 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
     
     let supabase;
     try {
-      supabase = supabaseBrowser();
+      supabase = await getSupabaseBrowser();
     } catch (err) {
-      // Handle missing public keys
-      const errorMsg = "Site misconfigured: set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel env.";
+      // Handle Supabase config errors
+      const errorMsg = `Supabase config error: ${err instanceof Error ? err.message : "Unknown error"}`;
       setFiles(prev => prev.map(f => ({ ...f, state: "error", error: errorMsg })));
       setIsUploading(false);
       return;
