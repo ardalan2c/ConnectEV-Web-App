@@ -9,6 +9,8 @@ import { Metadata } from "next";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
+  title: "Fast EV-charger installs across GTA",
+  description: "Upload panel photos, get a price band in minutes, and book your install.",
   alternates: { canonical: "/" }
 };
 
@@ -65,8 +67,12 @@ export default function HomePage() {
         {/* Process Section */}
         <section id="why" className="mx-auto max-w-7xl px-4 py-16">
           <h2 className="text-2xl font-semibold mb-6">How it works</h2>
-          <div className="grid md:grid-cols-4 gap-6">
-            {["1) Instant Quote", "2) Virtual Check", "3) ESA Permit", "4) Install Day"].map((t) => (
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              "1) Request quote",
+              "2) Photo review & price",
+              "3) Install & permit",
+            ].map((t) => (
               <div key={t} className="rounded-2xl border border-black/10 p-6 bg-white shadow-soft">
                 <h3 className="font-medium text-sm">{t}</h3>
                 <div className="h-0.5 bg-emerald-100 mt-4" />

@@ -1,4 +1,4 @@
-export const metadata = { title: "Privacy" };
+export const metadata = { title: "Privacy", description: "How we handle your contact details, addresses, and panel photos." };
 
 export default function PrivacyPage() {
   return (
@@ -11,4 +11,3 @@ export default function PrivacyPage() {
     </div>
   );
 }
-

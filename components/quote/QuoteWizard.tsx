@@ -35,6 +35,7 @@ export function QuoteWizard() {
   const [leadId, setLeadId] = React.useState<string | null>(null);
   const [tempLeadId] = React.useState(() => `temp-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
   const [uploadedFiles, setUploadedFiles] = React.useState<{ path: string; mime: string; size: number }[]>([]);
+  const [isUploadingPhotos, setIsUploadingPhotos] = React.useState(false);
 
   const nextStep = () => setStep((s) => Math.min(4, s + 1) as Step);
   const prevStep = () => setStep((s) => Math.max(1, s - 1) as Step);
@@ -259,7 +260,10 @@ export function QuoteWizard() {
           <PhotoUploader 
             leadId={tempLeadId}
             onUploaded={setUploadedFiles}
+            onUploadingChange={setIsUploadingPhotos}
           />
+
+          <p className="text-xs text-slate-600">JPG/PNG/HEIC up to 5MB each. Photos are only used to provide an accurate quote.</p>
           
           <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
             <div className="text-sm">
@@ -276,7 +280,7 @@ export function QuoteWizard() {
             <Button variant="outline" onClick={prevStep}>Back</Button>
             <Button 
               onClick={submitLead} 
-              disabled={!canSubmit || isSubmitting}
+              disabled={!canSubmit || isSubmitting || isUploadingPhotos}
               size="lg"
             >
               {isSubmitting ? "Submitting..." : "Get My Quote"}
