@@ -48,6 +48,17 @@ export function assertProdEnv() {
     throw new Error("Missing Supabase config: need either (NEXT_PUBLIC_SUPABASE_URL + NEXT_PUBLIC_SUPABASE_ANON_KEY) or (SUPABASE_URL + SUPABASE_ANON_KEY)");
   }
   
+  // Validate Supabase URL format (must be HTTPS Project URL, not Postgres DSN)
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  if (supabaseUrl) {
+    if (/^postgres(ql)?:\/\//.test(supabaseUrl)) {
+      throw new Error("SUPABASE_URL must be your https Project URL (https://<ref>.supabase.co), not a Postgres connection string. DATABASE_URL should contain the Postgres DSN.");
+    }
+    if (!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(supabaseUrl)) {
+      throw new Error("Invalid Supabase URL format. Expected https://<ref>.supabase.co");
+    }
+  }
+  
   const required = [
     "NEXT_PUBLIC_SITE_URL",
     "DATABASE_URL",

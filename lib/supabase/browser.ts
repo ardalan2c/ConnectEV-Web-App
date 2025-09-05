@@ -13,16 +13,24 @@ export async function getSupabaseBrowser(): Promise<SupabaseClient> {
   let url = inlineUrl;
   let anon = inlineAnon;
 
+  // Validate inline URL if present
+  if (url && !/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(url)) {
+    // Invalid inline URL, fallback to server
+    url = undefined;
+    anon = undefined;
+  }
+
   if (!url || !anon) {
     // Fallback: fetch from server at runtime
     const res = await fetch("/api/supabase/public", { cache: "no-store" });
     if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(
-        `Failed to load Supabase public config (${res.status}): ${text || "no body"}`
-      );
+      const errorData = await res.json().catch(() => ({}));
+      throw new Error(errorData.error || `Failed to load Supabase public config (${res.status})`);
     }
     const data = await res.json();
+    if (!data.ok) {
+      throw new Error(data.error);
+    }
     url = data.url;
     anon = data.anon;
   }

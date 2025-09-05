@@ -67,7 +67,7 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
       supabase = await getSupabaseBrowser();
     } catch (err) {
       // Handle Supabase config errors
-      const errorMsg = `Supabase config error: ${err instanceof Error ? err.message : "Unknown error"}`;
+      const errorMsg = `Supabase config error: ${err instanceof Error ? err.message : "Unknown error"}. See /debug/supabase.`;
       setFiles(prev => prev.map(f => ({ ...f, state: "error", error: errorMsg })));
       setIsUploading(false);
       return;
