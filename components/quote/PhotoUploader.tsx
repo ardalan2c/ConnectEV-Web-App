@@ -17,9 +17,10 @@ interface FileUpload {
 interface Props {
   leadId: string;
   onUploaded?: (files: { path: string; mime: string; size: number }[]) => void;
+  onUploadingChange?: (isUploading: boolean) => void;
 }
 
-export function PhotoUploader({ leadId, onUploaded }: Props) {
+export function PhotoUploader({ leadId, onUploaded, onUploadingChange }: Props) {
   const [files, setFiles] = React.useState<FileUpload[]>([]);
   const [isUploading, setIsUploading] = React.useState(false);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -56,6 +57,11 @@ export function PhotoUploader({ leadId, onUploaded }: Props) {
       fileInputRef.current.value = '';
     }
   };
+
+  React.useEffect(() => {
+    onUploadingChange?.(isUploading || files.some(f => f.state === "uploading"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUploading, files.map(f => f.state).join(",")]);
 
   const uploadFiles = async () => {
     if (files.length === 0 || isUploading) return;

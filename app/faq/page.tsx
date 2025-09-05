@@ -1,6 +1,10 @@
 import { FaqAccordion } from "@/components/common/FaqAccordion";
+import type { Metadata } from "next";
 
-export const metadata = { title: "Frequently asked" };
+export const metadata: Metadata = {
+  title: "Frequently asked",
+  description: "Answers about permits, timelines, condos, pricing, and what to expect on install day.",
+};
 
 export default function FAQPage() {
   return (
@@ -10,4 +14,3 @@ export default function FAQPage() {
     </div>
   );
 }
-

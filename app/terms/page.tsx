@@ -1,4 +1,4 @@
-export const metadata = { title: "Terms" };
+export const metadata = { title: "Terms", description: "Estimate policy, scheduling, deposits, and cancellations." };
 
 export default function TermsPage() {
   return (
@@ -11,4 +11,3 @@ export default function TermsPage() {
     </div>
   );
 }
-
