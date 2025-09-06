@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Phone, MessageCircle } from "lucide-react";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import Image from "next/image";
 const navigation = [
   { name: "Services", href: "/services" },
   { name: "Pricing", href: "/pricing" },
+  { name: "Process", href: "/process" },
   { name: "Process", href: "/process" },
   { name: "FAQ", href: "/faq" },
   { name: "Service Areas", href: "/service-areas" },
@@ -28,7 +30,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded-lg">
-            <Image 
+            <Image
               src="/logo/logo.svg" 
               alt="ConnectEV Inc. Logo" 
               width={32} 
@@ -56,7 +58,7 @@ export function Header() {
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="outline" size="sm" asChild>
-              <a 
+              <a
                 href="tel:+16476072739" 
                 className="flex items-center gap-2 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
               >
@@ -65,7 +67,7 @@ export function Header() {
               </a>
             </Button>
             <Button variant="outline" size="sm" asChild>
-              <a 
+              <a
                 href="sms:+16476072739" 
                 className="flex items-center gap-2 min-h-[44px] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
               >
