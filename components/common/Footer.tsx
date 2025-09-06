@@ -1,70 +1,49 @@
 import Link from "next/link";
 
 const quickLinks = [
-  { href: "/quote", label: "Quote" },
-  { href: "/services", label: "Services" },
-  { href: "/pricing", label: "Pricing" },
-  { href: "/process", label: "Process" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/service-areas", label: "Service Areas" },
-  { href: "/privacy", label: "Privacy" },
-  { href: "/terms", label: "Terms" },
+  { name: "Quote", href: "/quote" },
+  { name: "Services", href: "/services" },
+  { name: "Pricing", href: "/pricing" },
+  { name: "Process", href: "/process" },
+  { name: "FAQ", href: "/faq" },
+  { name: "Service Areas", href: "/service-areas" },
+  { name: "Privacy", href: "/privacy" },
+  { name: "Terms", href: "/terms" },
 ];
 
 export function Footer() {
   return (
-    <footer className="border-t border-black/10 mt-16 bg-slate-50">
-      <div className="mx-auto max-w-7xl px-4 py-12">
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <div className="font-semibold text-lg">ConnectEV Inc.</div>
-            <div className="text-sm text-slate-600 space-y-1">
-              <div>Greater Toronto Area</div>
-              <div>
-                <a 
-                  href="tel:+16476072739" 
-                  className="hover:text-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded"
-                >
-                  +1 647-607-2739
-                </a>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div className="space-y-4">
-            <div className="font-medium">Quick Links</div>
-            <nav className="grid grid-cols-2 gap-2 text-sm" aria-label="Footer navigation">
-              {quickLinks.map((link) => (
-                <Link 
-                  key={link.href}
-                  href={link.href}
-                  className="text-slate-600 hover:text-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </nav>
-          </div>
-
-          {/* Legal & Compliance */}
-          <div className="space-y-4">
-            <div className="font-medium">Licensed & Insured</div>
-            <div className="text-sm text-slate-600 space-y-2">
-              <div>ESA Permit Included</div>
-              <div>WSIB Covered</div>
-              <div>Licensed Electrical Contractors</div>
-              <div>2-Year Workmanship Warranty</div>
-            </div>
+    <footer className="bg-gray-50 border-t border-gray-200 mt-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+        {/* NAP Line */}
+        <div className="text-center mb-8">
+          <div className="text-lg font-semibold text-gray-900 mb-2">
+            ConnectEV Inc. • GTA • 
+            <a 
+              href="tel:+16476072739" 
+              className="text-emerald-600 hover:text-emerald-700 ml-1 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded"
+            >
+              +1 647-607-2739
+            </a>
           </div>
         </div>
 
-        <div className="border-t border-black/10 mt-8 pt-8 text-center text-sm text-slate-600">
-          <p className="mb-2">
-            All installations by Licensed Electrical Contractors. ESA permit filed before work begins.
-          </p>
-          <p>© {new Date().getFullYear()} ConnectEV Inc. All rights reserved.</p>
+        {/* Quick Links */}
+        <nav className="flex flex-wrap justify-center gap-6 mb-8" aria-label="Footer navigation">
+          {quickLinks.map((link) => (
+            <Link 
+              key={link.href}
+              href={link.href}
+              className="text-gray-600 hover:text-emerald-600 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 rounded px-2 py-1"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Copyright */}
+        <div className="text-center text-sm text-gray-500">
+          © {new Date().getFullYear()} ConnectEV Inc.
         </div>
       </div>
     </footer>

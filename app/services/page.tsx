@@ -11,133 +11,86 @@ export const metadata: Metadata = {
 export default function ServicesPage() {
   return (
     <>
-      <main className="mx-auto max-w-7xl px-4 py-16">
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">EV Charger Installation Services</h1>
-          <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">EV Charger Installation Services</h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Professional Level-2 EV charger installation across the Greater Toronto Area. 
             Licensed contractors, ESA permits included, and 2-year workmanship warranty.
           </p>
         </div>
 
-        {/* Service Types */}
+        {/* Residential Service */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12">What we install</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Home Level-2 Chargers",
-                description: "Perfect for driveways and garages. 240V charging that adds 25-40 miles of range per hour.",
-                features: ["NEMA 14-50 or hardwired", "Indoor/outdoor rated", "Smart charging options", "Load management available"]
-              },
-              {
-                title: "Condo & Apartment Installs", 
-                description: "Board-approved installations with proper documentation and permits.",
-                features: ["Board approval assistance", "Shared electrical planning", "Parking spot optimization", "Property management coordination"]
-              },
-              {
-                title: "Panel & Service Upgrades",
-                description: "Electrical service upgrades when your current panel can't support EV charging.",
-                features: ["100A to 200A upgrades", "New panel installation", "Service entrance upgrades", "Load calculations included"]
-              }
-            ].map((service) => (
-              <div key={service.title} className="bg-white rounded-2xl border border-black/10 p-8 shadow-soft">
-                <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
-                <p className="text-slate-600 mb-6">{service.description}</p>
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
+            <h2 className="text-3xl font-bold text-gray-900 mb-6">Residential Level-2 Charger Installation</h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Perfect for driveways and garages. 240V charging that adds 25-40 miles of range per hour.
+            </p>
+            
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">What's Included:</h3>
                 <ul className="space-y-2">
-                  {service.features.map((feature) => (
-                    <li key={feature} className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-emerald-500 rounded-full mr-3"></div>
-                      {feature}
+                  {[
+                    "Site assessment and load calculation",
+                    "ESA electrical permit and filing",
+                    "All materials and labor",
+                    "Circuit breaker and disconnect switch",
+                    "Conduit and wiring up to 50 feet",
+                    "Wall mounting and weatherproofing",
+                    "Final inspection and testing",
+                    "2-year workmanship warranty"
+                  ].map((item) => (
+                    <li key={item} className="flex items-start">
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full mr-3 mt-2"></div>
+                      <span className="text-gray-700">{item}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Process */}
-        <section className="mb-16 bg-slate-50 rounded-3xl p-12">
-          <h2 className="text-3xl font-bold text-center mb-12">Our installation process</h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              {
-                step: "1",
-                title: "Instant Quote",
-                description: "Upload panel photos and get your price band in minutes"
-              },
-              {
-                step: "2",
-                title: "Virtual Check", 
-                description: "15-minute video call to confirm scope and timeline"
-              },
-              {
-                step: "3",
-                title: "ESA Permit",
-                description: "We file the electrical permit before work begins"
-              },
-              {
-                step: "4", 
-                title: "Install Day",
-                description: "Licensed contractor completes your installation"
-              }
-            ].map((item) => (
-              <div key={item.step} className="text-center">
-                <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">
-                  {item.step}
-                </div>
-                <h3 className="text-lg font-semibold mb-2">{item.title}</h3>
-                <p className="text-slate-600 text-sm">{item.description}</p>
+              
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">Popular Add-Ons:</h3>
+                <ul className="space-y-2">
+                  {[
+                    "Extended conduit runs (per foot)",
+                    "Trenching for underground runs",
+                    "Panel upgrades (60A to 100A/200A)",
+                    "Load management devices",
+                    "Smart home integration"
+                  ].map((item) => (
+                    <li key={item} className="flex items-start">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2"></div>
+                      <span className="text-gray-700">{item}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
 
-        {/* Why Choose Us */}
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12">Why choose ConnectEV</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                title: "Licensed & Insured",
-                description: "All work performed by Licensed Electrical Contractors with WSIB coverage and liability insurance."
-              },
-              {
-                title: "ESA Permits Included",
-                description: "We handle all electrical permits and inspections. No surprise fees or paperwork for you."
-              },
-              {
-                title: "2-Year Warranty",
-                description: "Comprehensive workmanship warranty on all installations. We stand behind our work."
-              },
-              {
-                title: "Fast Turnaround",
-                description: "Most installations completed within 1-2 weeks of booking. Same-day quotes available."
-              }
-            ].map((benefit) => (
-              <div key={benefit.title} className="flex gap-4">
-                <div className="w-3 h-3 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">{benefit.title}</h3>
-                  <p className="text-slate-600">{benefit.description}</p>
-                </div>
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-gray-600">
+                <span className="font-medium">Timeline:</span> 3-7 days from permit approval
               </div>
-            ))}
+              <Button asChild className="bg-emerald-600 hover:bg-emerald-700 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                <Link href="/quote">Get Quote</Link>
+              </Button>
+            </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="text-center bg-emerald-600 text-white rounded-3xl p-12">
+        {/* CTA Section */}
+        <section className="text-center bg-emerald-600 text-white rounded-2xl p-12">
           <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
-          <p className="text-xl mb-8 text-emerald-100">
+          <p className="text-xl text-emerald-100 mb-8">
             Get your instant quote and book your EV charger installation today
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button asChild size="lg" className="bg-white text-emerald-600 hover:bg-slate-100 min-h-[48px] px-8">
+            <Button asChild size="lg" className="bg-white text-emerald-600 hover:bg-gray-100 min-h-[48px] px-8 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-600">
               <Link href="/quote">Get Instant Quote</Link>
             </Button>
-            <Button variant="outline" size="lg" asChild className="border-white text-white hover:bg-white/10 min-h-[48px] px-8">
+            <Button variant="outline" size="lg" asChild className="border-white text-white hover:bg-white/10 min-h-[48px] px-8 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-emerald-600">
               <a href="tel:+16476072739">Call 647-607-2739</a>
             </Button>
           </div>
